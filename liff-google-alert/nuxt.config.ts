@@ -1,39 +1,47 @@
+import { resolve } from 'path'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   srcDir: 'src',
+  modulesDir: [
+    'node_modules',
+    resolve(__dirname, '..', '..', 'node_modules'),
+  ],
   devtools: { enabled: true },
   app: {
     head: {
       title: process.env.APP_NAME,
     },
-    modules: ['@nuxtjs/i18n'],
-    i18n: {
-      defaultLocale: 'ja',
-      locales: [
-        { code: 'ja', iso: 'ja-JP', file: 'ja.json' },
+  },
+  modules: ['@nuxtjs/i18n'],
+  i18n: {
+    defaultLocale: 'ja',
+    locales: [{ code: 'ja', iso: 'ja-JP', file: 'ja.json' }],
+    langDir: 'assets/lang',
+  },
+  imports: {
+    autoImport: true,
+  },
+  css: [
+    '@/assets/styles/customize.scss',
+    '@/assets/styles/main.sass',
+  ],
+  nitro: {
+    prerender: {
+      ignore: [
+        '/200',
+        '/404',
       ],
-      langDir: 'assets/lang',
     },
-    imports: {
-      autoImport: true,
+  },
+  vite: {
+    ssr: {
+      noExternal: [
+        'vuetify',
+      ],
     },
-    css: [
-      '@/assets/styles/main.sass',
-    ],
-    nitro: {
-      prerender: {
-        ignore: [
-          '/200',
-          '/404',
-        ],
-      },
-    },
-    vite: {
-      ssr: {
-        noExternal: [
-          'vuetify',
-        ],
-      },
-    },
+  },
+  build: {
+    transpile: [/vuetify/],
   },
 })

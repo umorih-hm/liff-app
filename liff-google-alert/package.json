@@ -1,7 +1,6 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -11,7 +10,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxtjs/i18n": "^7.3.1",
+    "@nuxtjs/i18n": "^8.0.0-rc.5",
     "dayjs": "^1.11.10",
     "nuxt": "^3.8.2",
     "pug": "^3.0.2",
@@ -19,5 +18,8 @@
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
     "vuetify": "^3.4.3"
+  },
+  "dependencies": {
+    "@line/liff": "^2.22.4"
   }
 }

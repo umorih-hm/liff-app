@@ -1,0 +1,16 @@
+$family: 'Noto Sans JP', sans-serif;
+
+// @use "@mdi/font/css/materialdesignicons.css";
+@forward 'vuetify' with (
+  $body-font-family: $family,
+  $grid-breakpoints: (
+    'xs': 0,
+    'sm': 604px,
+    'md': 960px,
+    'lg': 1280px,
+    'xl': 1920px,
+    'xxl': 2560px,
+  )
+);
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
