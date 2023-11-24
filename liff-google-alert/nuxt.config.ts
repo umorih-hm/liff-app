@@ -13,6 +13,12 @@ export default defineNuxtConfig({
       title: process.env.APP_NAME,
     },
   },
+  runtimeConfig: {
+    public: {
+      notion_token: process.env.NOTION_TOKEN,
+      notion_database_id: process.env.NOTION_DATABASE_ID,
+    },
+  },
   modules: ['@nuxtjs/i18n'],
   i18n: {
     defaultLocale: 'ja',
@@ -39,6 +45,9 @@ export default defineNuxtConfig({
       noExternal: [
         'vuetify',
       ],
+    },
+    build: {
+      target: ['esnext'],
     },
   },
   build: {

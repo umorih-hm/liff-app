@@ -3,32 +3,26 @@ v-card(
   width="90vw"
 )
   v-data-iterator(
-    :items="items"
+    :items="alertLists"
     :page="page"
   )
-    template(v-slot:default="{ items }")
-      template(
-        v-for="(item, i) in items"
-        :key="i"
-      )
-        v-card(
-          v-bind="item.raw"
-        )
 </template>
 
 <script setup lang="ts">
-const page = 1
-const items = Array.from({ length: 15 }, (k, v) => ({
-      title: 'Item ' + v + 1,
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!',
-}))
+const config = useRuntimeConfig()
 
 // notionDB 一覧取得
-require("dotenv").config();
 const notion = useNotion();
-const response = await notion.databases.query({ database_id: process.env.DATABASE_ID });
-console.log(response);
-console.log(response.results[0].properties.Title.title[0].plain_text);
+const response = await notion.databases.query({ database_id: config.public.notion_database_id });
+
+// 取得データをループ
+const alertLists = response.results.map((item, index) => {
+  const alert = { title: item.properties.Title.title[0].plain_text, url:  item.properties.URL.url, publishedDate: item.properties.公開日.date.start }
+  return alert
+})
+
+console.log(alertLists)
+
 </script>
 
 <style scoped lang="sass">
