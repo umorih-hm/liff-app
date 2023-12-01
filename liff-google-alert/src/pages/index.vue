@@ -40,14 +40,13 @@ const getUrlOgp = (url: string) => {
 
 // URL の整形
 const formatURL = (url: string) => {
-  const searchString = 'url'
-  var regex = new RegExp(url);
-  var match = regex.exec(searchString);
+  const searchString = 'url='
+  var regex = new RegExp(searchString);
+  var match = regex.exec(url);
 
-  console.log(match)
   if (match) {
     var result = url.substring(match.index + match[0].length);
-    console.log(result);
+    return result
   } else {
     console.log("特定の文字列は見つかりませんでした。");
   }
