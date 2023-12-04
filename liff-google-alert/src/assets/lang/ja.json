@@ -3,6 +3,8 @@
 
   },
   "pages": {
-
+    "index": {
+      "provider": "提供元："
+    }
   }
 }

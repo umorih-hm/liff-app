@@ -18,7 +18,6 @@ v-card(
           hide-details
           placeholder="Search"
           prepend-inner-icon="mdi-magnify"
-          style="max-width: 300px;"
           variant="solo"
         )
 
@@ -30,39 +29,41 @@ v-card(
               :key="item.title"
               cols="auto"
             )
-              a(
-                :href="item.raw.url"
-                target="_blank"
+              v-card.pb-3(
+                border
+                flat
+                variant="elevated"
               )
-                v-card.pb-3(
-                  border
-                  flat
-                )
+                v-card-item
                   div.d-flex.px-4
-                    img(
-                      :src="item.raw.image"
-                      width="300px"
-                      height="160px"
-                      object-fit="fill"
+                    a(
+                      :href="item.raw.url"
+                      target="_blank"
                     )
+                      img(
+                        :src="item.raw.image"
+                        width="300px"
+                        height="auto"
+                        object-fit="fill"
+                      )
                     div
-                      v-list-item.mb-2(
-                        :subtitle="item.raw.siteName"
+                      a(
+                        :href="item.raw.url"
+                        target="_blank"
                       )
-                      v-list-item.mb-2(
-                        :subtitle="item.raw.description"
-                      )
-                      v-list-item.mb-2(
-                        :subtitle="item.raw.keyword"
-                      )
-                        template(v-slot:title)
-                          strong.text-h6.mb-2 {{ item.raw.title }}
-                      div.d-flex.px-4
-                        v-icon(
-                          icon="mdi-clock"
-                          start
+                        v-card-title.px-4.py-2 {{ item.raw.title }}
+                      v-card-text.px-4.py-2(v-if="!!item.raw.description") {{ item.raw.description }}
+                      v-chip.mx-4.my-2(
+                        label
+                        x-small
+                      ) {{ item.raw.keyword }}
+                      v-card-text.px-4.py-2(v-if="!!item.raw.siteName") {{$t('pages.index.provider')}} {{ item.raw.siteName }}
+                      div.d-flex.px-4.py-2.justify-end
+                        v-icon.mr-1(
+                          icon="mdi-clock-outline"
+                          x-small
                         )
-                        div.text-truncate {{ item.raw.publishedDate }}
+                        v-card-subtitle {{ item.raw.publishedDate }}
 
     template(v-slot:footer="{ page, pageCount, prevPage, nextPage }")
         div.d-flex.align-center.justify-center.pa-4
@@ -88,10 +89,13 @@ v-card(
 
 <script setup lang="ts">
 import { JSDOM } from "jsdom";
+import { useDisplay } from 'vuetify'
 
 const config = useRuntimeConfig()
+const { mdAndDown } = useDisplay()
 const page = ref(1)
 const search = ref('')
+const alertLists = ref([])
 
 // OGP 情報取得
 const getUrlOgp = (url: string) => {
@@ -129,7 +133,7 @@ const notion = useNotion();
 const response = await notion.databases.query({ database_id: config.public.notion_database_id });
 
 // 取得データをループ
-const alertLists = await Promise.all(response.results.map(async (item, index) => {
+alertLists.value = await Promise.all(response.results.map(async (item, index) => {
   const formattedUrl = formatURL(item.properties.URL.url)
   let alert = { title: item.properties.Title.title[0].plain_text, keyword: item.properties.Keyword.select.name, url: item.properties.URL.url, publishedDate: item.properties.公開日.date.start }
 
@@ -155,7 +159,6 @@ const alertLists = await Promise.all(response.results.map(async (item, index) =>
 
   return alert
 }))
-
 </script>
 
 <style scoped lang="sass">
