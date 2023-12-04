@@ -8,6 +8,7 @@ v-card(
     :search="search"
     :page="page"
   )
+
     template(v-slot:header)
       v-toolbar.px-2
         v-text-field(
@@ -21,7 +22,6 @@ v-card(
           variant="solo"
         )
 
-    //- カード作成
     template(v-slot:default="{ items }")
         v-container.pa-2(fluid)
           v-row(dense)
@@ -30,44 +30,39 @@ v-card(
               :key="item.title"
               cols="auto"
             )
-              v-card.pb-3(
-                border
-                flat
+              a(
+                :href="item.raw.url"
+                target="_blank"
               )
-                div.d-flex.px-4
-                  img(
-                    :src="item.raw.image"
-                    width="300px"
-                    height="160px"
-                    object-fit="fill"
-                  )
-                  div
-                    v-list-item.mb-2(
-                      :subtitle="item.raw.siteName"
+                v-card.pb-3(
+                  border
+                  flat
+                )
+                  div.d-flex.px-4
+                    img(
+                      :src="item.raw.image"
+                      width="300px"
+                      height="160px"
+                      object-fit="fill"
                     )
-                    v-list-item.mb-2(
-                      :subtitle="item.raw.description"
-                    )
-                    v-list-item.mb-2(
-                      :subtitle="item.raw.keyword"
-                    )
-                      template(v-slot:title)
-                        strong.text-h6.mb-2 {{ item.raw.title }}
-                    div.d-flex.px-4
-                      v-icon(
-                        icon="mdi-clock"
-                        start
+                    div
+                      v-list-item.mb-2(
+                        :subtitle="item.raw.siteName"
                       )
-                      div.text-truncate {{ item.raw.publishedDate }}
-                    v-btn(
-                      :href="item.raw.url"
-                      target="_blank"
-                      border
-                      flat
-                      size="small"
-                      class="text-none"
-                      text="Read"
-                    )
+                      v-list-item.mb-2(
+                        :subtitle="item.raw.description"
+                      )
+                      v-list-item.mb-2(
+                        :subtitle="item.raw.keyword"
+                      )
+                        template(v-slot:title)
+                          strong.text-h6.mb-2 {{ item.raw.title }}
+                      div.d-flex.px-4
+                        v-icon(
+                          icon="mdi-clock"
+                          start
+                        )
+                        div.text-truncate {{ item.raw.publishedDate }}
 
     template(v-slot:footer="{ page, pageCount, prevPage, nextPage }")
         div.d-flex.align-center.justify-center.pa-4
